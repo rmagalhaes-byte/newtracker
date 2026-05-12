@@ -1,0 +1,19 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Node / frontend (se vier a usar)
+node_modules/
+dist/
+build/
+.parcel-cache/
+.vite/
+
+# Env / secrets
+.env
+.env.*
+

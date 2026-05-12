@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hub de Progresso Blockchain | Vitrine Interativa</title>
+    <meta name="description" content="Acompanhe o progresso do conteúdo blockchain, aceda a recursos e participe na comunidade.">
+    
+    <!-- Google Fonts: Public Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Blobs removidos para design institucional -->
+
+    <header>
+        <nav id="main-nav">
+            <div class="logo">Blockchain<span>Hub</span></div>
+            <ul>
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#war-room">Sala de operações</a></li>
+                <li><a href="#timeline">Linha do tempo</a></li>
+                <li><a href="#recursos">Recursos</a></li>
+                <li><a href="#feedback">Feedback</a></li>
+                <li><button type="button" id="btn-vitrine-toggle" class="nav-pill" aria-pressed="false">Modo vitrine</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero">
+            <h1>Hub de Progresso <span class="gradient-text">Blockchain</span></h1>
+            <p>Uma vitrine centralizada e transparente dos nossos esforços de divulgação de conteúdo. Acompanhe em tempo real.</p>
+            <div class="hero-ctas">
+                <a href="#dashboard" class="btn btn-primary">Ver Progresso</a>
+                <a href="https://github.com/rshermans/pwd" class="btn btn-secondary">Repositório GitHub</a>
+            </div>
+        </section>
+
+        <section id="dashboard">
+            <div class="section-header">
+                <h2>Dashboard de Progresso</h2>
+                <p>Fluxo editorial: por fazer → produção → revisão → agendado → concluído.</p>
+                <div class="progress-summary">
+                    <div class="progress-info">
+                        <span id="progress-text">Carregando progresso...</span>
+                        <span id="percentage-text">0%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div id="progress-bar-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="dashboard-actions">
+                    <button id="btn-add-task" class="btn btn-primary">Adicionar Tarefa</button>
+                    <button id="btn-export" class="btn btn-secondary">Exportar para data.js</button>
+                    <button id="btn-reset" class="btn btn-outline" style="color: var(--error); border-color: var(--error); border-width: 1px;">Resetar Dados</button>
+                </div>
+            </div>
+
+            <div id="war-room" class="war-room" aria-labelledby="war-room-title">
+                <div class="war-room-header">
+                    <h3 id="war-room-title">Sala de operações</h3>
+                    <p class="war-room-sub">Últimos movimentos nas demandas — ideal para alinhar a equipa em stand-up ou revisão rápida.</p>
+                </div>
+                <ul id="war-room-feed" class="war-room-feed"></ul>
+            </div>
+
+            <div id="view-filters" class="timeline-toolbar view-filters-toolbar" role="region" aria-label="Filtros do quadro e da linha do tempo">
+                <p class="view-filters-intro">Os mesmos filtros aplicam-se ao quadro abaixo, à percentagem de conclusão e à linha do tempo.</p>
+                <div class="timeline-filters">
+                    <div class="timeline-filter">
+                        <label for="view-filter-canal">Canal</label>
+                        <select id="view-filter-canal"></select>
+                    </div>
+                    <div class="timeline-filter">
+                        <label for="view-filter-fase">Fase</label>
+                        <select id="view-filter-fase"></select>
+                    </div>
+                    <div class="timeline-filter">
+                        <label for="view-filter-status">Estado</label>
+                        <select id="view-filter-status"></select>
+                    </div>
+                    <button type="button" id="view-filter-clear" class="btn btn-outline timeline-filter-clear">Limpar filtros</button>
+                </div>
+            </div>
+
+            <!-- Modal Adicionar Tarefa -->
+            <div id="modal-task" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal" onclick="closeModal('modal-task')">&times;</span>
+                    <h3>Nova Tarefa</h3>
+                    <form id="form-task">
+                        <div class="form-group">
+                            <label for="task-name">Nome da Tarefa</label>
+                            <input type="text" id="task-name" required placeholder="Ex: Criar logo">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="task-canal">Canal</label>
+                                <select id="task-canal">
+                                    <option value="Instagram">Instagram</option>
+                                    <option value="WhatsApp">WhatsApp</option>
+                                    <option value="LinkedIn">LinkedIn</option>
+                                    <option value="Podcast">Podcast</option>
+                                    <option value="Webinar">Webinar</option>
+                                    <option value="Website">Website</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="task-semana">Semana</label>
+                                <select id="task-semana">
+                                    <option value="Semana 1">Semana 1</option>
+                                    <option value="Semana 2">Semana 2</option>
+                                    <option value="Semana 3">Semana 3</option>
+                                    <option value="Semana 4">Semana 4</option>
+                                    <option value="Semana 5">Semana 5</option>
+                                    <option value="Semana 6">Semana 6</option>
+                                    <option value="Semana 7">Semana 7</option>
+                                    <option value="Semana 8">Semana 8</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="task-fase">Fase</label>
+                            <input type="text" id="task-fase" value="Fase 1 — Fundação" placeholder="Ex: Fase 1 — Fundação">
+                        </div>
+                        <div class="form-group">
+                            <label for="task-responsavel">Responsável <span class="label-optional">(opcional)</span></label>
+                            <input type="text" id="task-responsavel" placeholder="Ex: Maria, equipa design">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Salvar Tarefa</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal Detalhe / Editar Tarefa -->
+            <div id="modal-task-detail" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal" onclick="closeModal('modal-task-detail')">&times;</span>
+                    <h3>Detalhe da demanda</h3>
+                    <p id="detail-task-title" class="detail-task-title"></p>
+                    <form id="form-task-detail">
+                        <input type="hidden" id="detail-task-index" value="">
+                        <div class="form-group">
+                            <label for="detail-responsavel">Responsável</label>
+                            <input type="text" id="detail-responsavel" placeholder="Quem conduz esta peça">
+                        </div>
+                        <div class="form-group">
+                            <label for="detail-link-rascunho">Link ao rascunho</label>
+                            <input type="url" id="detail-link-rascunho" placeholder="https://…">
+                        </div>
+                        <div class="form-group">
+                            <label for="detail-link-publicado">Link publicado</label>
+                            <input type="url" id="detail-link-publicado" placeholder="Post, artigo ou ficheiro final">
+                        </div>
+                        <div class="form-group">
+                            <label for="detail-data-publicacao">Data de publicação planeada</label>
+                            <input type="date" id="detail-data-publicacao">
+                            <p class="field-hint">Útil quando a peça está em Agendado ou a caminho da publicação.</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="detail-notas">Notas internas</label>
+                            <textarea id="detail-notas" rows="4" placeholder="Brief, dependências, próximo passo…"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Guardar detalhes</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal Exportar -->
+            <div id="modal-export" class="modal">
+                <div class="modal-content" style="max-width: 800px;">
+                    <span class="close-modal" onclick="closeModal('modal-export')">&times;</span>
+                    <h3>Código para data.js</h3>
+                    <p style="font-size: 0.8rem; margin-bottom: 1rem;">Copie o conteúdo abaixo e substitua tudo no seu ficheiro <code>data.js</code> para tornar as mudanças permanentes no GitHub.</p>
+                    <textarea id="export-area" readonly style="width: 100%; height: 400px; font-family: monospace; font-size: 0.8rem; padding: 1rem; border: 1px solid var(--outline-variant); border-radius: var(--rounded-md); background: var(--surface-container-low); color: var(--on-surface);"></textarea>
+                    <button id="btn-copy-export" class="btn btn-secondary" style="margin-top: 1rem; width: 100%;">Copiar para Área de Transferência</button>
+                </div>
+            </div>
+            
+            <div class="dashboard-grid dashboard-grid--pipeline">
+                <div class="column" id="todo">
+                    <h3><span class="dot dot-todo"></span> Por fazer</h3>
+                    <p class="column-hint">Entrada no pipeline</p>
+                    <div class="card-container"></div>
+                </div>
+                <div class="column" id="production">
+                    <h3>Produção</h3>
+                    <p class="column-hint">Rascunhos e peças em curso</p>
+                    <div class="card-container"></div>
+                </div>
+                <div class="column" id="review">
+                    <h3>Revisão</h3>
+                    <p class="column-hint">Validação interna ou alinhamento</p>
+                    <div class="card-container"></div>
+                </div>
+                <div class="column" id="scheduled">
+                    <h3>Agendado</h3>
+                    <p class="column-hint">Aprovado e com data ou slot reservado</p>
+                    <div class="card-container"></div>
+                </div>
+                <div class="column" id="done">
+                    <h3><span class="dot dot-done"></span> Concluído</h3>
+                    <p class="column-hint">Publicado ou demanda encerrada</p>
+                    <div class="card-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="timeline">
+            <div class="section-header">
+                <h2>Linha do tempo por semana</h2>
+                <p>Visão transversal do plano: mesma semana, todos os canais e estados. Os filtros estão no <a href="#view-filters">dashboard</a>, acima do quadro.</p>
+            </div>
+            <div id="timeline-root" class="timeline-root" aria-live="polite"></div>
+        </section>
+
+        <section id="recursos">
+            <div class="section-header">
+                <h2>Recursos e Materiais</h2>
+                <p>Aceda a artigos, podcasts e vídeos</p>
+            </div>
+            <div class="recursos-grid" id="recursos-list">
+                <!-- Populado via JS -->
+            </div>
+        </section>
+
+        <section id="feedback">
+            <div class="section-header">
+                <h2>Feedback e Colaboração</h2>
+                <p>Deixe as suas sugestões via GitHub Issues</p>
+            </div>
+            <div class="feedback-container">
+                <div id="giscus-placeholder">
+                    <p class="giscus-info">Integração com Giscus (GitHub Discussions) aparecerá aqui após configuração do repositório.</p>
+                    <a href="https://github.com/rshermans/pwd/issues/new" target="_blank" class="btn btn-outline">Abrir Issue no GitHub</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="sobre">
+            <div class="section-header">
+                <h2>Sobre o Projeto</h2>
+                <p>Missão e Objetivos a Longo Prazo</p>
+            </div>
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3>O "Hub de Progresso"</h3>
+                    <p>Este espaço foi criado para democratizar o acesso ao processo de criação de conteúdo sobre Blockchain. Acreditamos que a transparência no desenvolvimento é a melhor forma de educar e envolver a comunidade.</p>
+                </div>
+                <div class="about-card">
+                    <h3>Visão Disruptiva</h3>
+                    <p>Utilizar ferramentas de desenvolvimento como o GitHub para gerir e divulgar conteúdo não-técnico é um passo em direção a uma colaboração mais aberta e descentralizada.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 Hub de Progresso Blockchain. Inovador. Disruptivo. Simples.</p>
+            <div class="social-links">
+                <a href="#">Instagram</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">Spotify</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
